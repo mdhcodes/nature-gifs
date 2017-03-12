@@ -41,7 +41,9 @@ var getURL = function() {
     // q=searchTerm (button text captured on the button click event),
     // limit=10 (only 10 giphy images are requested),
     // rating=y,g,pg (only the following ratings are requested)
-    var url = 'http://api.giphy.com/v1/gifs/search?q=' + searchTerm + '&api_key=dc6zaTOxFJmzC&limit=10&rating=y&rating=g&rating=pg';
+
+    // Use https to begin the Giphy url to avoid the 'Mixed Content' error when a secure page requests an insecure endpoint.  
+    var url = 'https://api.giphy.com/v1/gifs/search?q=' + searchTerm + '&api_key=dc6zaTOxFJmzC&limit=10&rating=y&rating=g&rating=pg';
     // Execute getData() and pass it the url.
     getData(url);
     // Remove the .topic click event.
