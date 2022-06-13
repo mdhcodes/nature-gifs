@@ -1,22 +1,25 @@
 // Nature Gifs
 
+// Variable to store API Key
+const apiKey = config.API_KEY;
+
 // Create an array of strings related to topics that interest me. Save it to a variable called topics.
-var topics = ['Moon', 'Clouds', 'Sky', 'Constellations', 'Sun', 'Sand', 'Coral', 'Reef', 'Geyser', 'Wind', 'Forest', 'Trees', 'Plants', 'Flowers', 'Glacier', 'Northern Lights', 'Ocean', 'Mist',
+let topics = ['Moon', 'Clouds', 'Sky', 'Constellations', 'Sun', 'Sand', 'Coral', 'Reef', 'Geyser', 'Wind', 'Forest', 'Trees', 'Plants', 'Flowers', 'Glacier', 'Northern Lights', 'Ocean', 'Mist',
 'Waves', 'Lake', 'Snow', 'Ice', 'Rain', 'Sunrise', 'Sunset', 'Waterfall', 'Mountains', 'Stars', 'Fog'];
 
 
 // Create a div to hold the buttons
-var gifButtons = $('<div id="gif-buttons">');
+const gifButtons = $('<div id="gif-buttons">');
 // Append the #gifButtons div to the #gifs div.
 $('#gifs').append(gifButtons);
 
-var displayButtons = function() {
+const displayButtons = function() {
   // If a div exists, remove it.
   $('#gif-buttons').empty();
   // Loop over the topics array with the each() method.
   $.each(topics, function(index, btn) {
     // Create HTML buttons for each string in the topics array.
-    var button = $('<button class="topic">');
+    const button = $('<button class="topic">');
     // Set the button html text to the text of each string in the topics array.
     button.html(btn);
     // Append the buttons to the div with the ID of gif-buttons.
@@ -27,7 +30,7 @@ var displayButtons = function() {
 }; // end displayButtons()
 
 
-var getURL = function() {
+const getURL = function() {
   // Clear the searchTerm text every time the user clicks a button.
   $(this).text('');
   // When the user clicks on a button, the searchTerm is set to the button text and the url complete. The url is passed to the getData function and getData() is executed.
@@ -35,15 +38,15 @@ var getURL = function() {
     // Remove the #images div if it already exists.
     $('#images').remove();
     // Store the searchTerm (the clicked button text) in a variable to use in the url query search.
-    var searchTerm = $(this).text();
+    const searchTerm = $(this).text();
     console.log(searchTerm);
     // Access the Giphy API and request the following by adding these parameters to the url:
     // q=searchTerm (button text captured on the button click event),
     // limit=10 (only 10 giphy images are requested),
     // rating=y,g,pg (only the following ratings are requested)
 
-    // Use https to begin the Giphy url to avoid the 'Mixed Content' error when a secure page requests an insecure endpoint.  
-    var url = 'https://api.giphy.com/v1/gifs/search?q=' + searchTerm + '&api_key=dc6zaTOxFJmzC&limit=10&rating=y&rating=g&rating=pg';
+    // Use https to begin the Giphy url to avoid the 'Mixed Content' error when a secure page requests an insecure endpoint. 
+		const url = 'https://api.giphy.com/v1/gifs/search?api_key=' + apiKey + '&q=' + searchTerm + '&limit=10&offset=0&rating=g,pg,pg-13&lang=en'
     // Execute getData() and pass it the url.
     getData(url);
     // Remove the .topic click event.
@@ -52,7 +55,7 @@ var getURL = function() {
 }; // end getGifs()
 
 
-var getData = function(url) {
+const getData = function(url) {
   // Execute ajax () request.
   $.ajax({
     url: url,
@@ -60,18 +63,17 @@ var getData = function(url) {
   }).done(function(response) {
     console.log(response);
     // Create an images div to display all the gifs.
-    var images = $('<div id="images">');
+    const images = $('<div id="images">');
     // Append the #images div to the #gifs div.
     $('#gifs').append(images);
     // Loop over the response and access the data
     $.each(response.data, function(index) {
       // Create an .image div to hold each gif .img div and gif .rating div.
-      var gifImage = $('<div class="gif-image">');
+      const gifImage = $('<div class="gif-image">');
       // Create an HTML img tag for each image and populate the src attribute with the response.data for the image url.
-      var img = $('<div class="img"><img src="' + response.data[index].images.fixed_width_still.url + '" data-still="' + response.data[index].images.fixed_width_still.url + '" data-animate="' + response.data[index].images.fixed_width.url + '"></div>');
-      //var img = $('<div class="img"><img src="' + response.data[index].images.fixed_height_still.url + '" data-still="' + response.data[index].images.fixed_height_still.url + '" data-animate="' + response.data[index].images.fixed_height.url + '" data-state="still"></div>');
+      const img = $('<div class="img"><img src="' + response.data[index].images.fixed_width_still.url + '" data-still="' + response.data[index].images.fixed_width_still.url + '" data-animate="' + response.data[index].images.fixed_width.url + '"></div>');
       // Create an HTML p tag for each image rating.
-      var rating = $('<div class="rating"><p>Rating: ' + response.data[index].rating + '</p></div>');
+      const rating = $('<div class="rating"><p>Rating: ' + response.data[index].rating + '</p></div>');
       gifImage.append(img);
       gifImage.append(rating);
       //$('#gifs').append(gifImage);
@@ -87,9 +89,9 @@ var getData = function(url) {
 }; // end getData()
 
 
-var animate = function() {
+const animate = function() {
   // Initial image is still. The variable still is set to true.
-  var still = true;
+  let still = true;
   $('img').on('click', function() {
     // If still is true ...
     if(still) {
@@ -107,10 +109,10 @@ var animate = function() {
 }; // end animate()
 
 
-var addATopic = function() {
+const addATopic = function() {
   // Create an HTML form element with an input and submit button.
-  var formDiv = $('<div id="gif-form">');
-  var newTopic = $('<div id="new-topic" class="form-group">'+
+  const formDiv = $('<div id="gif-form">');
+  const newTopic = $('<div id="new-topic" class="form-group">'+
                    '<label for="input">Add a topic about nature</label>' +
                    '<input type="text" class="form-control">'+
                    '<button id="add-topic" class="btn btn-default" type="submit">Submit</button>' +
@@ -121,8 +123,9 @@ var addATopic = function() {
   $('#gifs').append(formDiv);
 
   // Thank You - http://stackoverflow.com/questions/3617797/regex-to-match-only-letters
-  // Regular expression pattern to match only strings that consist of one or more letters. This pattern starts with a ^ and ends with a $ to match all characters with the following character set [a-zA-Z] (letters only).
-  var lettersOnly = /^[a-zA-Z]+$/;
+  // Regular expression pattern to match only strings that consist of one or more letters. 
+	// This pattern starts with a ^ and ends with a $ to match all characters with the following character set [a-zA-Z] (letters only).
+  const lettersOnly = /^[a-zA-Z]+$/;
 
   // Create a click event to add a new button for a new topic.
   $('#add-topic').on('click', function(e) {
@@ -131,7 +134,7 @@ var addATopic = function() {
       // Prevent the form from submitting and refreshing the page.
       e.preventDefault();
       // Get the text the user typed in the input field.
-      var input = $('input[type=text]').val();
+      const input = $('input[type=text]').val();
       // Add the user input (text) to the topics array.
       topics.push(input);
       // Clear the input field.
@@ -158,7 +161,7 @@ var addATopic = function() {
         // Prevent the form from submitting and refreshing the page.
         e.preventDefault();
         // Get the text the user typed in the input field.
-        var input = $('input[type=text]').val();
+        const input = $('input[type=text]').val();
         // Add the user input (text) to the topics array.
         topics.push(input);
         // Clear the input field.
